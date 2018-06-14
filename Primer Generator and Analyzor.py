@@ -28,7 +28,7 @@ def RandomDNA_without_site(length, site_to_ruleout):
     while handler == 0:
         candi=RandomDNA(length)
         if (site_to_ruleout not in candi) and (site_to_ruleout not in candi.reverse_complement()):
-            handle = 1
+            handler = 1
             return candi
 def RandomDNA_without_sites(length, sites_list_to_ruleout=[]):
     handler = 0
