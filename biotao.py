@@ -10,6 +10,7 @@ from Bio.SeqUtils import GC
 from Bio import SeqIO
 import primer3
 from Bio.Alphabet import generic_dna,generic_rna,generic_protein
+from Bio.Restriction import *
 
 
 # In[3]:
@@ -239,7 +240,6 @@ def rc(str_seq):
 # In[21]:
 
 
-str_protein=''
 
 
 # In[22]:
@@ -312,26 +312,21 @@ def digestion_sites_counter (seq, digestion_site):
 
 
 # digestion_sites_counter(OM6_control_oligo,"GAGTC")
-digestion_sites_counter(OM6_control_oligo,MlyI.site)
 
 
 # In[136]:
 
 
-from Bio.Restriction import *
-MlyI.search(Seq(OM6_control_oligo))
 
 
 # In[137]:
 
 
-MlyI.catalyse(Seq(OM6_control_oligo))
 
 
 # In[234]:
 
 
-from Bio.Restriction import *
 
 def DigestionAnalysis(OM6_control_oligo,MlyI):
     rb=RestrictionBatch([MlyI])
@@ -347,7 +342,6 @@ def DigestionAnalysis(OM6_control_oligo,MlyI):
 # In[235]:
 
 
-DigestionAnalysis(OM6_control_oligo,MlyI)
 
 
 # In[107]:
@@ -410,7 +404,7 @@ illumina_p7 = "CAAGCAGAAGACGGCATACGAGAT"
 # In[51]:
 
 
-whole_ill_spacer
+
 
 
 # In[247]:
@@ -430,7 +424,6 @@ def dsDNA(oligo):
     print ('3-'+rc(oligo)[::-1]+'-5')
     print ()
         
-s=dsDNA(whole_ill_spacer)
 
 
 # In[248]:
@@ -494,25 +487,20 @@ def break2shorts(input_long_oligo, overlap=30):
     print (' '*(l-overlap)+ '3-'+ rev[l-overlap:]+'-5')
     
     return (fwd[:l],len(fwd[:l]),rc(rev[l-overlap:]),len(rc(rev[l-overlap:])))
-test_1313231="TATGAGTGTGGAGTCGTTGCGGCTGTCCTCAGATGCCTATTCTNNNAGATCGGAAGAGCACACGTCTGAACTCTTTCCCTACACGACGCTCTTCCGATCTNNNTGTGCTTTGTGACATGATGGTGACATCGGACTCATCAGGAAGC"
-break2shorts(test_1313231)
 
 
 # In[214]:
 
 
-break2shorts(whole_ill_spacer,29)
 
 
 # In[31]:
 
 
-seq1='AGATCGGAAGAGCACACGTCTGAACTCTTTCCCTACACGACG'
-seq2='GTGTGCAGACTTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA'[::-1]
 
 
 # In[32]:
 
 
-seq2
+
 
