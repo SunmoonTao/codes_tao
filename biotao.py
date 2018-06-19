@@ -43,13 +43,11 @@ def RandomDNA_without_sites(length, sites_list_to_ruleout=[]):
 # In[4]:
 
 
-primer3.calcHomodimer("TAGAGATAGTGTGGTGGCTCA")
 
 
 # In[5]:
 
 
-primer3.calcHeterodimer("TAGAGATAGTGTGGTGGCTCA", str(Seq("TAGAGATAGTGTGGTGGCTCA").reverse_complement()))
 
 
 # In[6]:
@@ -209,21 +207,12 @@ def optimal_combination(primers_list):
 # In[37]:
 
 
-sss=primer_generator(18, 'GAGTC', 5000000)
-print (len(sss))
 
 
 # In[42]:
 
 
-oc=optimal_combination(sss)
 
-
-# In[45]:
-
-
-for i in oc:
-    print (i[0],i[1],i[2])
 
 
 # In[18]:
@@ -258,20 +247,10 @@ str_protein=''
 
 Mly1_F='TATGAGTGTGGAGTCGTTGC'
 Mly1_R='GCTTCCTGATGAGTCCGATG'
-Mly_F_a="TGCGCATGGAGTCTCACC"
-Mly_R_a="TGCTTGCGGAGTCAATGC"
-Mly_F_g="TGCATGCAGAGTCAACGC"
-Mly_R_g="TCATTCGCGAGTCGCAAC"
+
 constant_adaptor_r = 'ACACTCTTTCCCTACACGACGCTCTTCCGATCT'  # 5->3
 constant_adaptor_f = 'GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT'  # 5->3
 ###use 18 bp adaptors; use 26bp illumina_spacer; UMI = 12bp on both side.
-sss='NNNNNN' + str(Seq(constant_adaptor_f, generic_dna).reverse_complement()) + constant_adaptor_r +'NNNNNN'
-
-
-# In[38]:
-
-
-len(Mly_F_a)
 
 
 # In[23]:
@@ -283,7 +262,7 @@ om6_spacer = 'NNN' + str(Seq(constant_adaptor_f[-27:], generic_dna).reverse_comp
 # In[49]:
 
 
-om6_spacer
+
 
 
 # In[24]:
@@ -295,7 +274,6 @@ umi_12_spacer = 'NNNNNN' + str(Seq(constant_adaptor_f[-26:], generic_dna).revers
 # In[50]:
 
 
-umi_12_spacer
 
 
 # In[25]:
@@ -321,20 +299,6 @@ rc_digestion_site=str(Seq(digestion_site).reverse_complement())
 
 OM6_control_oligo=Mly1_F + str(Seq(fw_ref).reverse_complement()) +'NNN' + str(Seq(constant_adaptor_f[-27:]).reverse_complement()) + constant_adaptor_r[-27:] +'NNN'+ str(Seq(rev_ref).reverse_complement()) + str(Seq(Mly1_R).reverse_complement())  
 OM6_control_probe=str(Seq(fw_ref).reverse_complement()) +'NNN' + str(Seq(constant_adaptor_f[-27:]).reverse_complement()) + constant_adaptor_r[-27:] +'NNN'+ str(Seq(rev_ref).reverse_complement())
-for i in oc:
-    Mly1_F=i[1]
-    Mly1_R=i[2]
-    Mly1_F_fwd = Mly1_F + str(Seq(fw_ref).reverse_complement())
-    Mly1_R_rev = str(Seq(rev_ref).reverse_complement()) + str(Seq(Mly1_R).reverse_complement())
-
-    oligo=Mly1_F + str(Seq(fw_ref).reverse_complement()) +'NNN' + str(Seq(constant_adaptor_f[-27:]).reverse_complement()) + constant_adaptor_r[-27:] +'NNN'+ str(Seq(rev_ref).reverse_complement()) + str(Seq(Mly1_R).reverse_complement())
-#     print (Mly1_F_fwd)
-#     print ('|'* len (Mly1_F_fwd))
-#     print (oligo)
-#     print (' '* (len(oligo)-len(Mly1_R_rev))+'|'* len (Mly1_R_rev))
-#     print (' '* (len(oligo)-len(Mly1_R_rev))+Mly1_R_rev)
-    print (Mly1_F_fwd, rc(Mly1_R_rev),Mly1_F_fwd.count(digestion_site) + Mly1_F_fwd.count(rc_digestion_site),Mly1_R_rev.count(digestion_site) + Mly1_R_rev.count(rc_digestion_site))
-
 
 # In[127]:
 
@@ -505,8 +469,7 @@ s
 # In[245]:
 
 
-for ssssi in s:
-    print (ssssi)
+
 
 
 # In[90]:
@@ -552,99 +515,4 @@ seq2='GTGTGCAGACTTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA'[::-1]
 
 
 seq2
-
-
-# In[33]:
-
-
-from pydna.dseq import Dseq
-
-
-# In[250]:
-
-
-m=Dseq('AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTTCAGACGTGTGAGATCGGAAGAGCGTCGTGTAGGGAAAGAGTTCAGACGTGTG')
-
-
-# In[260]:
-
-
-m.watson
-
-
-# In[259]:
-
-
-m.crick
-
-
-# In[34]:
-
-
-from pydna.genbank import Genbank
-gb = Genbank("myself@email.com") # Tell Genbank who you are!
-gene = gb.nucleotide("X06997") # Kluyveromyces lactis LAC12 gene for lactose permease.
-from pydna.parsers import parse_primers
-primer_f,primer_r = parse_primers(''' >760_KlLAC12_rv (20-mer)
-                                      ttaaacagattctgcctctg
-
-                                      >759_KlLAC12_fw (19-mer)
-                                      aaatggcagatcattcgag ''')
-from pydna.amplify import pcr
-pcr_prod = pcr(primer_f,primer_r, gene)
-vector = gb.nucleotide("AJ001614") # pCAPs cloning vector
-from Bio.Restriction import EcoRV
-lin_vector = vector.linearize(EcoRV)
-rec_vec =  ( lin_vector + pcr_prod ).looped()
-
-
-# In[35]:
-
-
-from dna_features_viewer import GraphicFeature, GraphicRecord
-features=[
-    GraphicFeature(start=0, end=20, strand=+1, color="#ffd700",
-                   label="Small feature"),
-    GraphicFeature(start=20, end=500, strand=+1, color="#ffcccc",
-                   label="Gene 1 with a very long name"),
-    GraphicFeature(start=400, end=700, strand=-1, color="#cffccc",
-                   label="Gene 2"),
-    GraphicFeature(start=600, end=900, strand=+1, color="#ccccff",
-                   label="Gene 3")
-]
-record = GraphicRecord(sequence_length=1000, features=features)
-record.plot(figure_width=5)
-
-
-# In[36]:
-
-
-from dna_features_viewer import GraphicFeature, GraphicRecord
-
-sequence = "ATGCATGCATGCATGCATGCATGCATGC"
-record = GraphicRecord(sequence, features=[
-    GraphicFeature(start=5, end=10, strand=+1, color='#ffcccc'),
-    GraphicFeature(start=8, end=15, strand=+1, color='#ccccff')
-])
-
-ax, _ = record.plot(figure_width=5)
-record.plot_sequence(ax)
-record.plot_translation(ax, (8, 23), fontdict={'weight': 'bold'})
-ax.figure.savefig('sequence_and_translation.png', bbox_inches='tight')
-
-
-# In[ ]:
-
-
-from dna_features_viewer import GraphicFeature, GraphicRecord
-
-record = GraphicRecord(sequence="ATGCATGCATGCATGCATGCATGCATGC", features=[
-    GraphicFeature(start=5, end=10, strand=+1, color='#ffcccc'),
-    GraphicFeature(start=8, end=15, strand=+1, color='#ccccff')
-])
-
-ax, _ = record.plot(figure_width=5)
-record.plot_sequence(ax)
-record.plot_translation(ax, (8, 23), fontdict={'weight': 'bold'})
-ax.figure.savefig('sequence_and_translation.png', bbox_inches='tight')
 
