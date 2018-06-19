@@ -16,7 +16,6 @@ from Bio.Alphabet import generic_dna,generic_rna,generic_protein
 
 
 import random
-from Bio.Seq import Seq
 
 def RandomDNA(length):
     str_dna= ''.join(random.choice("A"*25+"C"*25+"G"*25+"T"*25) for _ in range(length))
