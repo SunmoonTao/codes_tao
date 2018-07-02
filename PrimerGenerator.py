@@ -234,7 +234,6 @@ om6_spacer = 'NNN' + str(Seq(constant_adaptor_f[-27:], generic_dna).reverse_comp
 # In[ ]:
 
 
-om6_spacer
 
 
 # In[ ]:
@@ -246,7 +245,6 @@ umi_12_spacer = 'NNNNNN' + str(Seq(constant_adaptor_f[-26:], generic_dna).revers
 # In[ ]:
 
 
-umi_12_spacer
 
 
 # In[ ]:
@@ -276,21 +274,6 @@ rev_watson='TCACCATCATGTCACAAAGCACA'
 digestion_site = 'GAGTC'
 rc_digestion_site=str(Seq(digestion_site).reverse_complement())
 
-OM6_control_oligo=Mly1_F + str(Seq(fw_watson).reverse_complement()) +'NNN' + str(Seq(constant_adaptor_f[-27:]).reverse_complement()) + constant_adaptor_r[-27:] +'NNN'+ str(Seq(rev_watson).reverse_complement()) + str(Seq(Mly1_R).reverse_complement())  
-OM6_control_probe=str(Seq(fw_watson).reverse_complement()) +'NNN' + str(Seq(constant_adaptor_f[-27:]).reverse_complement()) + constant_adaptor_r[-27:] +'NNN'+ str(Seq(rev_watson).reverse_complement())
-for i in oc:
-    Mly1_F=i[1]
-    Mly1_R=i[2]
-    Mly1_F_fwd = Mly1_F + str(Seq(fw_watson).reverse_complement())
-    Mly1_R_rev = str(Seq(rev_watson).reverse_complement()) + str(Seq(Mly1_R).reverse_complement())
-
-    oligo=Mly1_F + str(Seq(fw_watson).reverse_complement()) +'NNN' + str(Seq(constant_adaptor_f[-27:]).reverse_complement()) + constant_adaptor_r[-27:] +'NNN'+ str(Seq(rev_watson).reverse_complement()) + str(Seq(Mly1_R).reverse_complement())
-#     print (Mly1_F_fwd)
-#     print ('|'* len (Mly1_F_fwd))
-#     print (oligo)
-#     print (' '* (len(oligo)-len(Mly1_R_rev))+'|'* len (Mly1_R_rev))
-#     print (' '* (len(oligo)-len(Mly1_R_rev))+Mly1_R_rev)
-    print (Mly1_F_fwd, rc(Mly1_R_rev),Mly1_F_fwd.count(digestion_site) + Mly1_F_fwd.count(rc_digestion_site),Mly1_R_rev.count(digestion_site) + Mly1_R_rev.count(rc_digestion_site))
 
 
 # In[ ]:
@@ -301,30 +284,7 @@ def digestion_sites_counter (seq, digestion_site):
     print (seq.count(digestion_site) + seq.count(rc_digestion_site))
 
 
-# In[ ]:
 
-
-from Bio.Restriction import *
-MlyI.search(Seq(OM6_control_oligo))
-
-
-# In[ ]:
-
-
-# digestion_sites_counter(OM6_control_oligo,"GAGTC")
-digestion_sites_counter(OM6_control_oligo,MlyI.site)
-
-
-# In[ ]:
-
-
-MlyI.catalyse(Seq(OM6_control_oligo))
-
-
-# In[ ]:
-
-
-from Bio.Restriction import *
 
 def DigestionAnalysis(OM6_control_oligo,MlyI):
     rb=RestrictionBatch([MlyI])
@@ -368,7 +328,6 @@ def control_om_parts(fwd_watson,rev_crick,Mly1_F,Mly1_R,constant_adaptor_f,const
 # In[ ]:
 
 
-control_om_parts(fw_watson,rev_watson,Mly1_F,Mly1_R,constant_adaptor_f,constant_adaptor_r,UMI_length)
 
 
 # In[ ]:
@@ -401,25 +360,22 @@ ill_sequence_spacer ='NNNNNN' + str(Seq(constant_adaptor_f, generic_dna).reverse
 # In[ ]:
 
 
-illu=(om_parts(fw_watson,rev_watson,Mly1_F,Mly1_R,constant_adaptor_f,constant_adaptor_r,UMI_length=12))
 
-
-# In[ ]:
-
-
-ill_sequence_spacer ==illu[2]
 
 
 # In[ ]:
 
 
-umi12=om_parts(fw_watson,rev_watson,Mly1_F,Mly1_R,constant_adaptor_f[-26:],constant_adaptor_r[-26:],12)
 
 
 # In[ ]:
 
 
-umi12_control_probe=umi12[1]
+
+
+# In[ ]:
+
+
 
 
 # In[ ]:
@@ -442,7 +398,7 @@ illumina_p7 = "CAAGCAGAAGACGGCATACGAGAT"
 # In[ ]:
 
 
-whole_ill_spacer
+
 
 
 # In[ ]:
@@ -462,7 +418,7 @@ def dsDNA(oligo):
     print ('3-'+rc(oligo)[::-1]+'-5')
     print ()
         
-s=dsDNA(whole_ill_spacer)
+
 
 
 # In[ ]:
@@ -522,164 +478,4 @@ def break2shorts(input_long_oligo, overlap=30):
 # test_1313231="TATGAGTGTGGAGTCGTTGCGGCTGTCCTCAGATGCCTATTCTNNNAGATCGGAAGAGCACACGTCTGAACTCTTTCCCTACACGACGCTCTTCCGATCTNNNTGTGCTTTGTGACATGATGGTGACATCGGACTCATCAGGAAGC"
 # break2shorts(test_1313231)
 
-
-# In[ ]:
-
-
-break2shorts(OM6_control_probe,50)
-
-
-# In[ ]:
-
-
-break2shorts(umi12_control_probe)
-
-
-# In[ ]:
-
-
-###validate with snapgene
-OM6_control_oligo=="TATGAGTGTGGAGTCGTTGCGGCTGTCCTCAGATGCCTATTCTNNNAGATCGGAAGAGCACACGTCTGAACTCTTTCCCTACACGACGCTCTTCCGATCTNNNTGTGCTTTGTGACATGATGGTGACATCGGACTCATCAGGAAGC"
-
-
-# ## Blast online
-
-# In[ ]:
-
-
-#cd OMs
-
-
-# In[ ]:
-
-
-from Bio.Blast import NCBIXML
-
-
-# In[ ]:
-
-
-seq=Seq(fw_watson,generic_dna)
-fasta_string = open("seq.fasta").read()
-
-
-# In[ ]:
-
-
-with open('seq.fasta','w') as f:
-    f.write('>\r')
-    f.write(str(seq))
-f.close()   
-    
-
-
-# In[ ]:
-
-
-with open('seq.fasta','r') as f:
-    s=f.read()
-    print (s)
-f.close()
-
-
-# In[ ]:
-
-
-seq
-
-
-# ## Available database
-# Name	Title	Type
-# nt	Nucleotide collection	DNA
-# nr	Non-redundant	Protein
-# refseq_rna	NCBI Transcript Reference Sequences	DNA
-# refseq_protein	NCBI Protein Reference Sequences	Protein
-# swissprot	Non-redundant UniProtKB/SwissProt sequences	Protein
-# pdbaa	PDB protein database	Protein
-# pdbnt	PDB nucleotide database	DNA
-
-# In[ ]:
-
-
-result_handle = NCBIWWW.qblast("blastn", "nt", str(seq))
-# result_handle = NCBIWWW.qblast("blastn", "nt", "test_5.fasta", megablast=True)
-
-br = NCBIXML.read(result_handle)
-
-
-# In[ ]:
-
-
-E_VALUE_THRESH = 0.001
-# for m in br:
-for alignment in br.alignments:
-    for hsp in alignment.hsps:
-        print("sequence:", alignment.title)
-        print("length:", alignment.length)
-        print("e value:", hsp.expect)
-
-
-# In[ ]:
-
-
-br.alignments
-
-
-# ## Blast locally
-
-# In[ ]:
-
-
-from Bio.Blast.Applications import NcbiblastnCommandline
-
-
-# In[ ]:
-
-
-cline = NcbiblastnCommandline(query="/Users/ltao/gitsss/biopython/Doc/examples/m_cold.fasta", db="/Users/ltao/ref/blastdb/nt",
-                              evalue=0.001, out="m_cold.xml", outfmt=5)
-cline
-print(cline)
-
-
-# In[ ]:
-
-
-stdout, stderr = blastn_cline()
-
-
-# ### Parsing NCBIXML
-
-# In[ ]:
-
-
-from Bio.Blast import NCBIXML
-
-result_handle = open("m_cold.xml")
-blast_record = NCBIXML.read(result_handle)
-
-
-# In[ ]:
-
-
-blastn_cline = NcbiblastnCommandline(query='seq.fasta', db="/Users/ltao/ref/blastdb/nt", evalue=0.1,
-                                     outfmt=5, out="seq_blstn.xml", )
-blastn_cline
-print(blastn_cline)
-stdout, stderr = blastn_cline()
-
-
-# In[ ]:
-
-
-from Bio.Blast import NCBIXML
-
-result_handle = open("seq_blstn.xml")
-blast_record = NCBIXML.read(result_handle)
-
-
-# In[ ]:
-
-
-blast_record.alignments
 
