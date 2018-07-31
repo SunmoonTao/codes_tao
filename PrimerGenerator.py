@@ -15,7 +15,8 @@ from Bio.Alphabet import generic_dna,generic_rna,generic_protein
 from Bio.Blast import NCBIWWW
 import csv
 from pydna.dseq import Dseq
-
+from Bio import pairwise2
+from Bio.pairwise2 import format_alignment
 
 # In[ ]:
 
@@ -185,8 +186,11 @@ def top_com(primers_list):
 # In[ ]:
 
 
+         
+
 ### Find top primer pairs based on HeterodimerTm value(smallest the best), 
 ### Each primer can only be used in one pair of primers
+### similarity between pairs: use score of alignment to tell apart
 
 def optimal_combination(primers_list):
     primer_candidates=primers_list[:]
@@ -195,18 +199,38 @@ def optimal_combination(primers_list):
         top=top_com(primer_candidates)
         primer_candidates.remove(top[1])
         primer_candidates.remove(top[2])
-        optimal_primers.append(top)
+        
+        alignments = pairwise2.align.globalms(top[1], top[2],1, -1, -0.5, -0.1)
+        alignments_end3 = pairwise2.align.globalms(top[1][-5:], top[2][-5:],1, -1, -0.5, -0.1)
+
+        if alignments_end3[0][2] < 3 and alignments[0][2] <10 :
+            top.append(alignments[0])
+            top.append(alignments_end3[0])
+            optimal_primers.append(top)
+#         optimal_primers.append(top)
 
     return(optimal_primers)            
-
-
 # In[ ]:
 
 
 def rc(str_seq):
     return str(Seq(str_seq).reverse_complement())
 
+## yield will create a generator instead of a list
+def substring_indexes(substring, string):
+    """ 
+    Generate indices of where substring begins in string
 
+    >>> list(find_substring('me', "The cat says meow, meow"))
+    [13, 19]
+    """
+    last_found = -1  # Begin at -1 so the next position to search from is 0
+    while True:
+        # Find next index of substring, by starting after its last known position
+        last_found = string.find(substring, last_found + 1)
+        if last_found == -1:  
+            break  # All occurrences have been found
+        yield last_found
 # ### Spacer  and MIPs
 
 # In[ ]:
