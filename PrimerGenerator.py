@@ -103,7 +103,8 @@ def end_3(mly_primer):
 
 ### generate unique list of primers 
 ### Added temp tuple 
-def primer_generator(length,digestion_site, tests):
+### Add end3_off option
+def primer_generator(length,digestion_site, tests,end_CG=True):
     mly_primer_20 = list()
     i = 0
     rc_digestion_site=str(Seq(digestion_site).reverse_complement())
@@ -112,10 +113,17 @@ def primer_generator(length,digestion_site, tests):
         i=i+1
         mly_primer = str(RandomDNA_without_site(bp,digestion_site)) + digestion_site + str(RandomDNA_without_site(5,digestion_site))
         s=primer3.calcHairpin(mly_primer)
-        if 53<primer3.calcTm(mly_primer)<55 and mly_primer.count(digestion_site) + mly_primer.count(rc_digestion_site) == 1        and not s.structure_found and 50 <= gc_counter(mly_primer) <= 60 and end_3(mly_primer)         and runs_counter(mly_primer) and repeat_counter(mly_primer):
-            mly_primer_20.append(mly_primer)
-    return (list(tuple(mly_primer_20)))     
-
+        if end_CG:
+            if 53<primer3.calcTm(mly_primer)<55 and mly_primer.count(digestion_site) + mly_primer.count(rc_digestion_site) == 1\
+            and not s.structure_found and 50 <= gc_counter(mly_primer) <= 60 and end_3(mly_primer) \
+            and runs_counter(mly_primer) and repeat_counter(mly_primer):
+                mly_primer_20.append(mly_primer)
+        else:
+            if 53<primer3.calcTm(mly_primer)<55 and mly_primer.count(digestion_site) + mly_primer.count(rc_digestion_site) == 1\
+            and not s.structure_found and 50 <= gc_counter(mly_primer) <= 60 \
+            and runs_counter(mly_primer) and repeat_counter(mly_primer):
+                mly_primer_20.append(mly_primer)           
+    return (list(tuple(mly_primer_20)))  
 
 # In[ ]:
 
