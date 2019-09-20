@@ -1,0 +1,6 @@
+git config credential.helper store
+git push https://github.com/SunmoonTao/codes_tao.git
+Username: taoliming.too@gmail.com
+Password: 
+git config --global user.email "taoliming.too@gmail.com"
+git config --global user.name "SunmoonTao"

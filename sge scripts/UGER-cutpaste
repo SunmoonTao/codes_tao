@@ -1,0 +1,60 @@
+ssh -X login.broadinstitute.org
+
+
+use
+use -l
+use -l blast
+
+
+qstat
+which qstat
+use UGER
+which qstat
+qstat
+
+
+ish
+which qstat
+use UGER
+which qstat
+qstat
+
+
+qstat
+qstat -j <jobID>
+
+
+qsub -b y ls
+
+
+cd /broad/software/unixdemo/intro2uger
+qsub toy.sh
+qsub toy2.sh
+qsub -N toy3 toy2.sh
+qsub -N toy4 -q short toy2.sh
+qstat -j "toy*" | egrep "job_name|hard_queue_list"
+
+
+qstat -g c
+qstat
+qstat -u "*"
+
+
+qsub -cwd toy.sh
+qstat
+qstat -j <jobID> | grep error
+qsub -cwd -j y -o /broad/hptmp/jlchang -N cwd toy.sh
+more /broad/hptmp/jlchang/cwd.o<jobID>
+qsub -wd /broad/hptmp/jlchang -N wd toy.sh
+more /broad/hptmp/jlchang/wd.o<jobID>
+
+
+qacct -j 1240318
+
+
+cd /broad/software/unixdemo/intro2uger
+qsub simple.sh
+qdel <jobID>
+qstat -j <jobID> | grep cmd
+qalter -wd /broad/hptmp/jlchang <jobID>
+from silver:

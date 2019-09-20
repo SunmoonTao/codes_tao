@@ -1,0 +1,42 @@
+#! /bin/bash
+
+
+#$ -cwd
+#$ -q broad
+#$ -P regevlab
+#$ -l h_vmem=4g
+#$ -l h_rt=hh:mm:ss
+#$ -e /broad/hptmp/user/error.err
+#$ -o /broad/hptmp/user/out.log
+
+
+source /broad/software/scripts/useuse 
+reuse -q <insert required dotkit>
+
+Your commands here.
+
+---- End
+Call the script like the following ( assuming the script is named test.sh )
+       qsub /path/to/script/test.sh
+You will get a response like:
+Your job 1145469 ("test.sh") has been submitted
+
+
+Script description:
+#!/bin/bash	 Tells the system it is a bash script ( required )
+#$ -cwd	
+#$ indicates arguments for qsub.
+-cwd starts the job in your current directory ( without this the job starts in your home; where you are when you login )
+#$ -q long	Use long queue
+#$ -P regevlab	Identify as a regev lab member ( required to use our priority )
+#$ -l h_vmem=4g	Ask for 4 GB of memory per thread / task / job ( good practice, otherwise 1 GB default ) 
+#$ -l h_rt=hh:mm:ss	maximum run time
+#$ -e /broad/hptmp/user/error.err	File to write errors ( good practice, otherwise writes to your home )
+#$ -o /broad/hptmp/user/out.log	File to write stdout from programs ( non-error logging messages ) ( good practice, otherwise writes to your home )
+source /broad/software/scripts/useuse
+        Must include, helps set up the environment ( required for the Broad environment )
+reuse -q <insert required dotkit> 
+        Add use commands if needed ( optional )
+
+Your commands here.
+        Add the commands you want to run here. You can put multiple commands here.

@@ -1,0 +1,50 @@
+#! /bin/bash
+
+#$ -cwd
+#$ -q long
+#$ -P regevlab
+#$ -l h_vmem=40g
+#$ -e /ahg/regevdata/users/ltao/tmp/error.err
+#$ -o /ahg/regevdata/users/ltao/tmp/out.log
+
+#################
+  ##Set Env ##
+#################
+source /broad/software/scripts/useuse
+use .bcl2fastq2-2.17.1.14
+
+
+
+
+#################
+##Set file path##
+#################
+
+data_dir="/home/unix/ltao/miseq/180926_M01581_1289_000000000-D4Y53"
+out_dir="/home/unix/ltao/data"
+sample_sheet="/home/unix/ltao/miseq/180926_M01581_1289_000000000-D4Y53/SampleSheet.csv"
+
+
+
+#################
+##Run command ##
+#################
+bcl2fastq \
+--runfolder-dir $data_dir \
+--output-dir $out_dir \
+--sample-sheet $sample_sheet
+
+
+
+# cmd="bpipe run -p runfolder-dir=$data_dir\
+#     -p output-dir=$out_dir\
+#     -p minimum-trimmed-read-length=$minimum_trimed_read_length\
+#     -p sample-sheet=$sample_sheet\
+#     -p barcode-mismatches=$max_mismatch\
+#    /ahg/regevdata/users/jding/script/bcl2fastq.pipe"
+
+#echo $cmd > run_pipe.sh
+#chmod 700 run_pipe.sh
+#./run_pipe.sh
+
+# bcl2fastq --runfolder-dir $data_dir  --output-dir $out_dir  --minimum-trimmed-read-length $minimum_trimed_read_length --mask-short-adapter-reads 8 --no-lane-splitting --sample-sheet $sample_sheet --barcode-mismatches $max_mismatch
